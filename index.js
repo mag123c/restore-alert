@@ -1,5 +1,6 @@
 import { connDriver } from "./driver.js";
 import { ironstein } from "./ironstein.js";
+import { sendDiscordNotification } from "./notification.js";
 
 const urls = [
     "https://www.ironstein.co.kr/31/?idx=24"
@@ -19,7 +20,8 @@ async function main(url, option, index) {
             const isRestore = await ironstein(driver, option);
 
             if (isRestore) {
-                indicesToDelete.push(index);
+                // indicesToDelete.push(index);
+                await sendDiscordNotification(url, option);
             }
         }
     }
@@ -33,7 +35,7 @@ async function main(url, option, index) {
     }
 }
 
-(async function() {
+(async function () {
     const promises = urls.map((url, index) => main(url, optionsList[index], index));
     await Promise.all(promises);
 
