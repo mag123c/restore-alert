@@ -1,4 +1,4 @@
-name: restore-alert
+name: Readme Update
 
 on:
   schedule:
@@ -16,7 +16,11 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm ci
-      - name: start
-        run: npm run start
-        env: 
-          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}    
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+      - name: Update README
+        run: npm start
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
