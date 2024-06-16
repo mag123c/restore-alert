@@ -20,7 +20,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-      - name: Update README
+      - name: run restore alert
         run: npm start
         env:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}

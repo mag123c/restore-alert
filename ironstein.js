@@ -1,4 +1,4 @@
-import { By } from "selenium-webdriver";
+import { By, until } from "selenium-webdriver";
 
 /**
  * @summary 구매 버튼이 활성화 되어 있는지 확인
@@ -7,13 +7,12 @@ import { By } from "selenium-webdriver";
  */
 async function isBuyBtnIsActive(driver) {
     try {
-        const buyDiv = await driver.findElement(By.className("buy_btns holder pc   "));
+        const buyDiv = await driver.wait(until.elementLocated(By.css(".buy_btns.holder.pc")), 10000);
         const buyBtn = await buyDiv.findElement(By.xpath("./*"));
         const btnText = await buyBtn.getText();
         return !btnText.includes("품절");
-    }
-    catch (e) {
-        throw new Error('구매 버튼을 찾을 수 없습니다.')
+    } catch (e) {
+        throw new Error('구매 버튼을 찾을 수 없습니다.');
     }
 }
 
@@ -30,11 +29,9 @@ async function getElementText(element, driver) {
             text = await driver.executeScript("return arguments[0].innerText;", element);
         }
         return text.trim();
-    }
-    catch (e) {
+    } catch (e) {
         throw new Error('텍스트를 가져올 수 없습니다.');
     }
-
 }
 
 /**
@@ -58,33 +55,29 @@ async function isSelectedSize(driver, options) {
         }
 
         return -1;
-    }
-    catch (e) {
+    } catch (e) {
         throw e;
     }
-
 }
 
 export async function ironstein(driver, options) {
     try {
         if (!await isBuyBtnIsActive(driver)) {
             console.log("품절");
-            return;
+            return false;
         }
 
         const restock = await isSelectedSize(driver, options);
 
-        if (restock == -1) throw new Error('옵션을 찾을 수 없습니다.');
-
-        if (restock == 0) {
+        if (restock === -1) throw new Error('옵션을 찾을 수 없습니다.');
+        if (restock === 0) {
             console.log(`${options} 품절`);
-            return;
+            return false;
         }
 
-        //재입고 알림 구현
+        // 재입고 알림 구현
         return true;
-    }
-    catch (e) {
+    } catch (e) {
         throw e;
     }
 }
