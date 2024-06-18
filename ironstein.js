@@ -10,11 +10,14 @@ async function isBuyBtnIsActive(driver) {
         const buyDiv = await driver.wait(until.elementLocated(By.css(".buy_btns.holder.pc")), 10000);
         const buyBtn = await buyDiv.findElement(By.xpath("./*"));
         const btnText = await buyBtn.getText();
+        console.log(`버튼 텍스트: ${btnText}`);
         return !btnText.includes("품절");
     } catch (e) {
+        console.error('구매 버튼을 찾을 수 없습니다:', e);
         throw new Error('구매 버튼을 찾을 수 없습니다.');
     }
 }
+
 
 /**
  * @summary 주어진 요소의 텍스트를 안전하게 가져오기

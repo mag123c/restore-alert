@@ -44,7 +44,4 @@ async function main(url, option, index) {
         urls.splice(index, 1);
         optionsList.splice(index, 1);
     }
-
-    console.log("Updated URLs:", urls);
-    console.log("Updated Options:", optionsList);
 })();
